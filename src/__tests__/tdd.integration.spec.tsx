@@ -41,7 +41,25 @@ describe('반복 유형 선택', () => {
 });
 
 describe('반복 간격 설정', () => {
-  // TODO: 반복 간격 설정 테스트 작성
+  it('반복 간격을 입력하면 올바르게 설정되어야 한다.', async () => {
+    const { user } = setup(<App />);
+    const intervalInput = screen.getByLabelText('반복 간격');
+
+    user.click(screen.getByLabelText('반복 일정'));
+    await user.type(intervalInput, '2');
+
+    expect(intervalInput).toHaveValue(2);
+  });
+
+  it('반복 간격은 1 이상의 숫자여야 한다.', async () => {
+    const { user } = setup(<App />);
+    const intervalInput = screen.getByLabelText('반복 간격');
+
+    user.click(screen.getByLabelText('반복 일정'));
+    await user.type(intervalInput, '0');
+
+    expect(intervalInput).toBeInvalid();
+  });
 });
 
 describe('반복 일정 표시', () => {
