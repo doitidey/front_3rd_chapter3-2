@@ -61,6 +61,29 @@ describe('반복 간격 설정', () => {
 
     expect(intervalInput).toBeInvalid();
   });
+
+  it('반복 일정이 올바르게 추가된다.', async () => {
+    setupMockHandlerCreation([
+      {
+        id: '1',
+        title: '반복 일정 테스트',
+        date: '2024-10-15',
+        startTime: '09:00',
+        endTime: '10:00',
+        description: '반복 일정 설명',
+        location: '회의실 B',
+        category: '업무',
+        repeat: { type: 'weekly', interval: 1, endDate: '2024-12-31' },
+        notificationTime: 10,
+      },
+    ]);
+
+    setup(<App />);
+    await screen.findByText('일정 로딩 완료!');
+
+    const weekView = within(screen.getByTestId('week-view'));
+    expect(weekView.getByText('반복 일정 테스트')).toBeInTheDocument();
+  });
 });
 
 describe('반복 일정 표시', () => {
