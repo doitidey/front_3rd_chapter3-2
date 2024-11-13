@@ -139,12 +139,19 @@ describe('반복 일정 단일 수정', () => {
         notificationTime: 5,
       },
     ]);
-    setup(<App />);
-  });
-});
 
-describe('반복 일정 단일 수정', () => {
-  // TODO: 반복 일정 단일 수정 테스트 작성
+    const { user } = setup(<App />);
+    await screen.findByText('일정 로딩 완료!');
+
+    await user.click(screen.getByLabelText('Edit event'));
+
+    await user.type(screen.getByLabelText('제목'), '수정된 단일 일정');
+    await user.click(screen.getByTestId('event-submit-button'));
+
+    const eventList = within(screen.getByTestId('event-list'));
+    expect(eventList.getByText('수정된 단일 일정')).toBeInTheDocument();
+    expect(eventList.queryByTestId('repeat-icon')).not.toBeInTheDocument();
+  });
 });
 
 describe('반복 일정 단일 삭제', () => {
