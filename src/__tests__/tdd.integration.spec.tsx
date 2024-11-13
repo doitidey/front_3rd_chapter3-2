@@ -116,6 +116,8 @@ describe('반복 일정 표시', () => {
     ]);
 
     setup(<App />);
+    await screen.findByText('일정 로딩 완료!');
+
     const eventList = screen.getByTestId('month-view');
 
     expect(within(eventList).queryByTestId('repeat-icon')).toBeInTheDocument();
