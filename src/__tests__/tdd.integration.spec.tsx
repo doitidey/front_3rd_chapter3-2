@@ -109,7 +109,10 @@ describe('반복 종료', () => {
 
     expect(endDateInput).toHaveValue('2025-06-30');
   });
-  it('반복 일정 종료 후 반복되지 않는다.', () => {
+});
+
+describe('반복 일정 단일 수정', () => {
+  it('단일 일정으로 수정되면 반복 아이콘이 제거된다.', async () => {
     setupMockHandlerCreation([
       {
         id: '1',
@@ -132,7 +135,7 @@ describe('반복 종료', () => {
         description: '기존 팀 미팅 2',
         location: '회의실 C',
         category: '업무 회의',
-        repeat: { type: 'weekly', interval: 1 },
+        repeat: { type: 'weekly', interval: 1, endDate: '2024-11-20' },
         notificationTime: 5,
       },
     ]);
