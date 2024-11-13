@@ -100,7 +100,44 @@ describe('반복 일정 표시', () => {
 });
 
 describe('반복 종료', () => {
-  // TODO: 반복 종료 테스트 작성
+  it('반복 종료일을 설정 할 수 있다.', async () => {
+    const { user } = setup(<App />);
+    const repeatCheckbox = screen.getByLabelText('반복 설정');
+    user.click(repeatCheckbox);
+    const endDateInput = screen.getByLabelText('반복 종료일');
+    await user.type(endDateInput, '2025-06-30');
+
+    expect(endDateInput).toHaveValue('2025-06-30');
+  });
+  it('반복 일정 종료 후 반복되지 않는다.', () => {
+    setupMockHandlerCreation([
+      {
+        id: '1',
+        title: '기존 회의',
+        date: '2024-10-15',
+        startTime: '09:00',
+        endTime: '10:00',
+        description: '기존 팀 미팅',
+        location: '회의실 B',
+        category: '업무',
+        repeat: { type: 'none', interval: 0 },
+        notificationTime: 10,
+      },
+      {
+        id: '2',
+        title: '기존 회의2',
+        date: '2024-10-15',
+        startTime: '11:00',
+        endTime: '12:00',
+        description: '기존 팀 미팅 2',
+        location: '회의실 C',
+        category: '업무 회의',
+        repeat: { type: 'weekly', interval: 1 },
+        notificationTime: 5,
+      },
+    ]);
+    setup(<App />);
+  });
 });
 
 describe('반복 일정 단일 수정', () => {
