@@ -148,5 +148,41 @@ describe('반복 일정 단일 수정', () => {
 });
 
 describe('반복 일정 단일 삭제', () => {
-  // TODO: 반복 일정 단일 삭제 테스트 작성
+  it('반복 일정의 단일 항목을 삭제하면 해당 일정만 삭제된다.', async () => {
+    setupMockHandlerCreation([
+      {
+        id: '1',
+        title: '기존 회의',
+        date: '2024-10-15',
+        startTime: '09:00',
+        endTime: '10:00',
+        description: '기존 팀 미팅',
+        location: '회의실 B',
+        category: '업무',
+        repeat: { type: 'weekly', interval: 1 },
+        notificationTime: 10,
+      },
+      {
+        id: '2',
+        title: '기존 회의2',
+        date: '2024-10-15',
+        startTime: '11:00',
+        endTime: '12:00',
+        description: '기존 팀 미팅 2',
+        location: '회의실 C',
+        category: '업무 회의',
+        repeat: { type: 'none', interval: 1 },
+        notificationTime: 5,
+      },
+    ]);
+    const { user } = setup(<App />);
+    await screen.findByText('일정 로딩 완료!');
+
+    const deleteButton = screen.getByLabelText('Delete event');
+    await user.click(deleteButton);
+
+    const eventList = within(screen.getByTestId('event-list'));
+    expect(eventList.queryByText('기존 회의')).not.toBeInTheDocument();
+    expect(eventList.getByText('기존 회의 2')).toBeInTheDocument();
+  });
 });
